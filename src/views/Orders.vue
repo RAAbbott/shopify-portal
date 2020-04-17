@@ -1,13 +1,13 @@
 <template>
     <div class="ordersContainer">
         <div v-for="item in items" :key="item">
-           <OrderCard class="card"/>   
+           <Card class="card"/>   
         </div>
     </div>
 </template>
 
 <script>
-import OrderCard from '../components/OrderCard.vue';
+import Card from '../components/Card.vue';
 
 export default {
     data() {
@@ -17,7 +17,7 @@ export default {
     },
 
     components: {
-        OrderCard
+        Card
     },
 
     methods: {

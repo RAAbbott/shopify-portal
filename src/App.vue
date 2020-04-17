@@ -5,8 +5,6 @@
     <div class="main-content">
       <Page />
     </div>
-   
-    
   </div>
 </template>
 
@@ -19,7 +17,6 @@ import Header from './components/Header.vue';
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
     Page,
     SideBar,
     Header
@@ -35,10 +32,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  overflow-x: none;
 }
 
 .main-content {
   margin-left: 200px;
   padding: 50px 50px;
+  overflow-x: auto;
 }
 </style>

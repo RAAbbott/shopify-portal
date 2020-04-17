@@ -1,21 +1,25 @@
 <template>
     <div>
         <h2 class="pageTitle">{{page}}</h2>
-        <div class="routerView">
-            <Orders />      
-        </div>
-        
+        <div class="cardContainer">
+            <div v-for="order in orders" :key="order.id">
+                <Card />   
+            </div>
+        </div>     
     </div>
 </template>
 
 <script>
-// import OrderCard from '../components/OrderCard.vue';
-import Orders from '../views/Orders.vue';
+import Card from '../components/Card.vue';
 
 export default {
+    data() {
+        return {
+            orders: this.$store.state.orderList
+        }
+    },
     components: {
-        // OrderCard,
-        Orders
+        Card,
     },
 
     computed: {
@@ -35,8 +39,15 @@ export default {
 
     .routerView {
         display: flex;
+        
+    }
+
+    .cardContainer {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
         justify-content: left;
-        height: 800px;
+        height: 900px;
         width: 100%;
     }
 
