@@ -28,13 +28,13 @@ export default {
 
 <style scoped>
     .sidebar {
-        height: 100%;
-        width: 200px;
+        height: 100vh;
+        width: 11vw;
         position: fixed;
         z-index: 1;
         top: 0;
         left: 0;
-        overflow-x: hidden;
+        overflow: none;
         padding-top: 20px;
         margin-top: 100px;
         border-right-style: solid;

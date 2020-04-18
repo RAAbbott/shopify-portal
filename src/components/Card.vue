@@ -1,7 +1,8 @@
 <template>
     <div class="card">
-        <Table />
-        <!-- <Notes /> -->
+        <span class="cardTitle">{{this.data.title}}</span>
+        <!-- <span class="cardTitle">{{this.data.group}}</span> -->
+        <Table :data="this.data"/>
     </div>
 </template>
 
@@ -9,33 +10,31 @@
 import Table from './Table.vue';
 
 export default {
+    props: ['data'],
+
     components: {
         Table
     },
+
     data() {
         return {
-            productHeaders: [],
-            orderHeaders: []
         }
     },
-
-    // methods: {
-
-    // },
-
-    // computed: {
-    //     cardClass() {
-    //         return true;
-    //     }
-    // }
 }
 </script>
 
 <style scoped>
+    .cardTitle {
+        display: flex;
+        justify-content: left;
+        margin: 10px 0 0 20px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
     .card {
         width: 600px;
         height: auto;
-        /* height: 250px; */
         margin-top: 20px;
         margin-bottom: 80px;
         margin-right: 50px;
