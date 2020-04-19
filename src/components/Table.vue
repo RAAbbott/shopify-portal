@@ -5,12 +5,7 @@
                 <div class="row header">
                     <div class="cell" v-for="(header, i) in headers" :key="i">{{header}}</div>
                 </div>
-                <div class="row" v-for="product in products" :key="product.id">
-                    <div class="cell">{{product.productName}}</div>
-                    <div class="cell"> {{product.productSize}}</div>
-                    <div class="cell">{{product.productColor}}</div>
-                    <div class="cell">{{product.custom}}</div>
-                </div>
+                <ProductRow v-for="product in products" :key="product.id" :product="product"/>
             </div>
         </div>
     </div>
@@ -18,12 +13,25 @@
 </template>
 
 <script>
+import ProductRow from './ProductRow.vue';
+
 export default {
+    components: {
+        ProductRow
+    },
+
     props: ['data'],
+
     data() {
         return {
             headers: this.$store.state.headers,
             products: this.data.products
+        }
+    },
+
+    methods: {
+        toggleComplete(product) {
+            return product;
         }
     },
 
@@ -57,12 +65,11 @@ export default {
         margin-top: 5px;
         box-shadow: -1px 1px 3px #cacaca;
         margin-left: 20px;
-        /* background-color: rgb(200, 233, 200) 'COMPLETE' color */
     }
 
-    .row:last-child {
+    /* .row:last-child {
         margin-bottom: 15px;
-    }
+    } */
 
     .header {
         margin-bottom: 15px;

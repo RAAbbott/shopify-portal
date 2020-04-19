@@ -32,12 +32,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  /* overflow: none; */
+  overflow: hidden;
+  /* overflow: auto; */
 }
 
 .main-content {
   margin-left: 200px;
   padding: 50px 50px;
-  overflow-x: auto;
+  /* overflow-x: auto; */
+  overflow-y: auto;
 }
 </style>

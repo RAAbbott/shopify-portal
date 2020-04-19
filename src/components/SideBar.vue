@@ -28,8 +28,8 @@ export default {
 
 <style scoped>
     .sidebar {
-        height: 100vh;
-        width: 11vw;
+        height: 100%;
+        width: 210px;
         position: fixed;
         z-index: 1;
         top: 0;

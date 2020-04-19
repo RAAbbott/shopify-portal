@@ -1,19 +1,21 @@
 <template>
     <div class="card">
         <span class="cardTitle">{{this.data.title}}</span>
-        <!-- <span class="cardTitle">{{this.data.group}}</span> -->
         <Table :data="this.data"/>
+        <OrderNotes v-if="this.type === 'Orders'" :notes="data.note"/>
     </div>
 </template>
 
 <script>
 import Table from './Table.vue';
+import OrderNotes from './OrderNotes.vue';
 
 export default {
-    props: ['data'],
+    props: ['data', 'type'],
 
     components: {
-        Table
+        Table,
+        OrderNotes
     },
 
     data() {
@@ -41,5 +43,10 @@ export default {
         border: 0.5px solid rgba(0,0,0,0.1);
         border-radius: 10px;
         box-shadow: -1px 3px 8px #aaaaaa;
+    }
+
+    .orderCompleted {
+        background-color: rgb(200, 233, 200);
+        opacity: .9;
     }
 </style>
