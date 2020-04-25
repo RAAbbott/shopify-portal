@@ -59,5 +59,6 @@ export default {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         min-height: 15px;
         height: auto;  
+        padding-left: 5px;
     }
 </style>
