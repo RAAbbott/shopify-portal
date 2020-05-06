@@ -5,8 +5,7 @@
                 <span class="pageTitle">{{page}}</span>
                 <span class="quantity">{{page === 'Orders' ? cardData.length : totalProducts}} {{page}}</span>
             </span>
-            <Filters class="filters" @filterValue="updateFilter"/>
-            <span v-for="filter in filters" :key="filter">{{filter}} </span>
+            <Filters class="filters"/>
         </div>
         <div class="viewFilters">
             <GroupSort class="groupSort" :page="page" :options="options" @filter="updateFilters"/>
@@ -31,10 +30,9 @@ export default {
     data() {
         return {
             totalProducts: 0,
-            options: [],
+            options: ['Date Ordered', 'Customer Name', 'Customer Email', 'Amount'],
             selectedGroupBy: 'productName',
-            selectedSortBy: 'customerName',
-            filters: [],
+            selectedSortBy: 'customerName'
         }
     },
 
@@ -71,47 +69,14 @@ export default {
             this.totalProducts = val
         },
 
-        setOptions(val) {
-            this.options = val;
-        },
-
         convertToCamelCase(str) {
             const combined = str.split(' ').join('');
             return `${combined.charAt(0).toLowerCase()}${combined.slice(1)}`;
         },
 
         updateFilters(index) {
-            if (this.page === 'Orders') {
-                this.selectedGroupBy = this.convertToCamelCase(this.options[index]);
-            } else {
-                this.selectedGroupBy = index === 0 ? 'productName' : `variant${index}`;
-            }
+            this.selectedGroupBy = this.convertToCamelCase(this.options[index]);
         },
-
-        updateFilter(val) {
-            this.filters.push(val);
-        },
-
-        filterBy(data) {
-            if (this.page === 'Orders') {
-                return data.filter(obj => {
-                    return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
-                });
-            } else {
-                const modData = data.map(obj => {
-                    // obj.products = obj.products.map(product => ({option1: product.option1,option2: product.option1,orderId: product.orderId,productName: product.productName,productProperties: product.productProperties,variant1: product.variant1,variant2: product.variant2}));
-                    this.filters.forEach(filter => {
-                        obj.products = obj.products.filter(product => JSON.stringify(product).toLowerCase().includes(filter.toLowerCase()))
-                    });
-                    return obj;
-                });
-
-                return modData.filter(obj => {
-                    // return this.filters.every(filter => JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
-                    return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
-                });
-            }
-        }
     },
 
     computed: {
@@ -120,22 +85,8 @@ export default {
         },
 
         cardData() {
-            const orders = this.$store.state.orders;
-            if (this.page === 'Orders') {
-                this.setOptions(['Date Ordered', 'Customer Name', 'Customer Email', 'Amount']);
-                const sorted = this.sortOrders(orders.map(order => ({title: `${order.customerName} - ${order.customerEmail} - $${order.amount} - ${order.dateOrdered}`, customerName: order.customerName, customerEmail: order.customerEmail, amount: order.amount, dateOrdered: order.dateOrdered, products: order.products, note: order.note})));
-                return this.filterBy(sorted) || []; 
-            } else if (this.page === 'Products') { 
-                this.setOptions(['Product Name', orders[0].products[0].option1, orders[0].products[0].option2, orders[0].products[0].option3]);
-                const products = orders.map(order=>order.products).flat();
-                this.setNumberOfProducts(products.length);
-                const grouped = this.groupProducts(products);
-                console.log(grouped);
-                return this.filterBy(grouped);
-            } else {
-                console.log('Other Page');
-                return [];
-            }
+            const orders = this.$store.state.orderList;
+            return this.sortOrders(orders.map(order => ({title: `${order.customerName} - ${order.customerEmail} - $${order.amount} - ${order.dateOrdered}`, customerName: order.customerName, customerEmail: order.customerEmail, amount: order.amount, dateOrdered: order.dateOrdered, products: order.products, note: order.note})));
         },
 
         headers() {

@@ -14,7 +14,8 @@ export default {
     },
     methods: {
         filterOrders() {
-            console.log(this.value);
+            this.$emit('filterValue', this.value);
+            this.value = '';
         }
     }
 }
@@ -22,10 +23,19 @@ export default {
 
 <style scoped>
     .label {
-        margin-right: 40px;
+        margin-right: 30px;
     }
 
     .filter {
-       
+        border: 0.5px solid rgba(0,0,0,0.1);
+        border-radius: 10px;
+        box-shadow: -1px 3px 5px #aaaaaa93;
+        padding: 10px;
+        font-size: 13px;
+        width: 300px;
+    }
+
+    .filter:focus {
+        outline: none;
     }
 </style>

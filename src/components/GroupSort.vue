@@ -28,7 +28,6 @@ export default {
 
     methods: {
         toggleSelected(index) {
-            console.log('New Index: ', index);
             this.indexSelected = index;
             this.$emit('filter', index);
         }

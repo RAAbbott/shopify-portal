@@ -13,7 +13,7 @@ export default {
     
     data() {
         return {
-            completed: false,
+            completed: this.product.completed,
         }
     },
 
