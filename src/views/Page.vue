@@ -107,7 +107,6 @@ export default {
                 });
 
                 return modData.filter(obj => {
-                    // return this.filters.every(filter => JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
                     return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
                 });
             }
