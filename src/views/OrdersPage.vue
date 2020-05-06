@@ -5,7 +5,11 @@
                 <span class="pageTitle">{{page}}</span>
                 <span class="quantity">{{page === 'Orders' ? cardData.length : totalProducts}} {{page}}</span>
             </span>
-            <Filters class="filters"/>
+            <span class="">
+                <label class="label" for="filterInput">Filter:</label>
+                <input v-model="value" name="filterInput" id="filterInput" class="filter" @keyup.enter="filterOrders"/>
+            </span>
+            <span v-for="filter in filters" :key="filter">{{filter}} </span>
         </div>
         <div class="viewFilters">
             <GroupSort class="groupSort" :page="page" :options="options" @filter="updateFilters"/>
