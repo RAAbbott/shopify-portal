@@ -101,12 +101,13 @@ export default {
                 const modData = data.map(obj => {
                     // obj.products = obj.products.map(product => ({option1: product.option1,option2: product.option1,orderId: product.orderId,productName: product.productName,productProperties: product.productProperties,variant1: product.variant1,variant2: product.variant2}));
                     this.filters.forEach(filter => {
-                        obj.products = obj.products.filter(product => JSON.stringify(product).toLowerCase().includes(filter.toLowerCase()))
+                        obj.products = obj.products.filter(product => filter.includes('e:') ? !JSON.stringify(product).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(product).toLowerCase().includes(filter.toLowerCase()))
                     });
                     return obj;
                 });
 
                 return modData.filter(obj => {
+                    // return this.filters.every(filter => JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
                     return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
                 });
             }
@@ -129,7 +130,6 @@ export default {
                 const products = orders.map(order=>order.products).flat();
                 this.setNumberOfProducts(products.length);
                 const grouped = this.groupProducts(products);
-                console.log(grouped);
                 return this.filterBy(grouped);
             } else {
                 console.log('Other Page');
