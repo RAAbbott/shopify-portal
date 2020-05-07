@@ -24,8 +24,8 @@
 import Card from '../components/Card.vue';
 import GroupSort from '../components/GroupSort.vue';
 import Filters from '../components/Filters.vue';
-import OrdersPage from './OrdersPage.vue';
-import ProductsPage from './ProductsPage.vue';
+// import OrdersPage from './OrdersPage.vue';
+// import ProductsPage from './ProductsPage.vue';
 
 export default {
     data() {
@@ -42,8 +42,8 @@ export default {
         Card,
         GroupSort,
         Filters,
-        OrdersPage,
-        ProductsPage
+        // OrdersPage,
+        // ProductsPage
     },
 
     methods: {
