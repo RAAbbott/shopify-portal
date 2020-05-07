@@ -27,7 +27,7 @@ export const store = new Vuex.Store({
 
     actions: {
         getOrders({state}) {
-            Axios.get('http://localhost:3060/orders').then(res => {
+            Axios.get('http://a0a5f65f.ngrok.io/orders').then(res => {
                 console.log(res.data);
                 state.orders = res.data;
                 // state.orders = res.data.orders;
