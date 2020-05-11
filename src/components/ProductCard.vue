@@ -10,14 +10,12 @@
 
 <script>
 import Table from './Table.vue';
-import OrderNotes from './OrderNotes.vue';
 
 export default {
     props: ['order', 'data'],
 
     components: {
         Table,
-        OrderNotes
     },
 
     data() {
