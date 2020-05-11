@@ -1,139 +1,79 @@
 <template>
     <div>
-        <div class="pageHeader">
-            <span class="leftSide">
-                <span class="pageTitle">{{page}}</span>
-                <span class="quantity">{{page === 'Orders' ? cardData.length : totalProducts}} {{page}}</span>
-            </span>
-            <span class="">
-                <label class="label" for="filterInput">Filter:</label>
-                <input v-model="value" name="filterInput" id="filterInput" class="filter" @keyup.enter="filterOrders"/>
-            </span>
-            <span v-for="filter in filters" :key="filter">{{filter}} </span>
-        </div>
-        <div class="viewFilters">
-            <GroupSort class="groupSort" :page="page" :options="options" @filter="updateFilters"/>
-            <!-- <Filters class="filters"/> -->
-        </div>
+        <PageHeader :itemLength="orders.length"/>
         <div class="cardContainer">
-            <div v-for="group in cardData" :key="group">
-                <Card :data="group" :type="page"/>
+            <div v-for="order in orders" :key="order.id"> 
+                <OrderCard :order="order" :products="productsForOrder(order)"/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import Card from '../components/Card.vue';
-import GroupSort from '../components/GroupSort.vue';
-import Filters from '../components/Filters.vue';
-import OrdersPage from './OrdersPage.vue';
-import ProductsPage from './ProductsPage.vue';
+import OrderCard from '../components/OrderCard.vue';
+import PageHeader from '../components/PageHeader.vue'
 
 export default {
     data() {
         return {
-            totalProducts: 0,
-            options: ['Date Ordered', 'Customer Name', 'Customer Email', 'Amount'],
-            selectedGroupBy: 'productName',
-            selectedSortBy: 'customerName'
+            options: ['Date Ordered', 'Customer Name'],
+            selectedSortByDir: 'down'
         }
     },
 
     components: {
-        Card,
-        GroupSort,
-        Filters,
-        OrdersPage,
-        ProductsPage
+        OrderCard,
+        PageHeader
     },
 
     methods: {
-        groupBy(xs, key) {
-            return xs.reduce(function(rv, x) {
-                (rv[x[key]] = rv[x[key]] || []).push(x);
-                return rv;
-            }, {});
+        productsForOrder(order) {
+            const ids = order.products;
+            const products = this.products.slice();
+            return products.filter(product => ids.find(id => id == product.id));
         },
 
-        groupProducts(products) {
-            const grouped = this.groupBy(products, this.selectedGroupBy)
-            const data = []
-            for (const group in grouped) {
-                data.push({title: group, products: grouped[group]})
-            }
-            return data.sort((a, b) => (a.title > b.title) ? 1 : -1);
+        sortOrders(orders) {
+            console.log('sorting');
+            return orders.sort((a,b) => a[this.selectedSortBy] > b[this.selectedSortBy] ? 1 : -1);
         },
 
-        sortOrders(products) {
-            return products.sort((a,b) => a[this.selectedGroupBy] > b[this.selectedGroupBy] ? 1 : -1);
+        sortProducts(order) {
+            return order.sort((a,b) => a > b ? 1 : -1);
         },
 
-        setNumberOfProducts(val) {
-            this.totalProducts = val
-        },
-
-        convertToCamelCase(str) {
-            const combined = str.split(' ').join('');
-            return `${combined.charAt(0).toLowerCase()}${combined.slice(1)}`;
-        },
-
-        updateFilters(index) {
-            this.selectedGroupBy = this.convertToCamelCase(this.options[index]);
+        getFilteredData(orders) {
+            return orders.filter(order => {
+                const modOrder = Object.assign({}, order);
+                modOrder.products = this.productsForOrder(order).map(product => Object.values(product));
+                // console.log('MODORDER : ', modOrder);
+                return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(Object.values(modOrder)).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(Object.values(modOrder)).toLowerCase().includes(filter.toLowerCase()));
+            });
         },
     },
 
     computed: {
-        page() {
-            return this.$store.state.currentPage;
+        orders() {
+            const orders = this.$store.getters.orders;
+            return this.sortOrders(this.getFilteredData(orders)) || []; 
         },
 
-        cardData() {
-            const orders = this.$store.state.orderList;
-            return this.sortOrders(orders.map(order => ({title: `${order.customerName} - ${order.customerEmail} - $${order.amount} - ${order.dateOrdered}`, customerName: order.customerName, customerEmail: order.customerEmail, amount: order.amount, dateOrdered: order.dateOrdered, products: order.products, note: order.note})));
+        products() {
+            return this.$store.getters.products;
         },
 
-        headers() {
-            return this.$store.state.tableHeaders;
+        filters() {
+            return this.$store.getters.filters;
         },
+
+        selectedSortBy() {
+            return this.$store.getters.sortBy;
+        }
     },
-
-    // watch: {
-    //     cardData() {
-
-    //     }
-    // },
-
-    created() {
-        this.$store.dispatch('getOrders');
-    }
 }
 </script>
 
 <style scoped>
-    .pageHeader {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-
-    .pageTitle {
-        font-weight: bold;
-        font-size: 30px;
-    }
-
-    .quantity {
-        /* display: flex;
-        flex-wrap: wrap;
-        justify-content: left;
-        margin-bottom: 20px; */
-        margin-left: 40px;
-    }
-
     .cardContainer {
         display: flex;
         flex-direction: row;
@@ -143,20 +83,4 @@ export default {
         width: 100%;
         overflow: auto;
     }
-
-    .viewFilters {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .filters {
-        margin-bottom: 20px;
-    }
-
-    .groupSort {
-        /* margin-bottom: 20px; */
-    }
-
 </style>

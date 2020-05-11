@@ -5,11 +5,10 @@
                 <div class="row header">
                     <div class="cell" v-for="(header, i) in headers" :key="i">{{header}}</div>
                 </div>
-                <ProductRow v-for="product in products" :key="product.id" :product="product"/>
+                <ProductRow v-for="product in this.products" :key="product.id" :product="product"/>
             </div>
         </div>
     </div>
-    
 </template>
 
 <script>
@@ -20,12 +19,11 @@ export default {
         ProductRow
     },
 
-    props: ['data'],
+    props: ['products'],
 
     data() {
         return {
             headers: this.$store.state.headers,
-            products: this.data.products
         }
     },
 
@@ -34,10 +32,6 @@ export default {
             return product;
         }
     },
-
-    computed() {
-
-    }
 }
 </script>
 

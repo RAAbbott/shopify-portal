@@ -2,7 +2,7 @@
     <div class="filters">
         <span>{{filterText}} </span>
         <div class="row">
-            <div class="cell" :class="{selected : indexSelected === i}" v-for="(option, i) in this.options" :key="i" @click="toggleSelected(i)">
+            <div class="cell" :class="{selected : indexSelected === i}" v-for="(option, i) in options" :key="i" @click="toggleSelected(i)">
                 {{option}}
             </div>
         </div>
@@ -11,8 +11,6 @@
 
 <script>
 export default {
-    props: ['page', 'options'],
-
     data() {
         return {
             indexSelected: 0,
@@ -21,15 +19,22 @@ export default {
 
     computed: {
         filterText() {
-            console.log('PAGE: ', this.page);
-            return this.page === 'Orders' ? 'Sort By:' : 'Group By:';
+            return this.isOrderPage ? 'Sort By:' : 'Group By:';
+        },
+
+        options() {
+            return this.isOrderPage ? this.$store.getters.sortByOptions : this.$store.getters.groupByOptions;
+        },
+
+        isOrderPage() {
+            return this.$store.getters.curPage === 'Orders';
         }
     },
 
     methods: {
         toggleSelected(index) {
             this.indexSelected = index;
-            this.$emit('filter', index);
+            this.$store.commit(`${this.isOrderPage ? 'changeSortBy' : 'changeGroupBy'}`, this.isOrderPage ? this.options[index] : index);
         }
     }
 }
@@ -39,13 +44,12 @@ export default {
     .filters {
         display: flex;
         flex-direction: row;
-        margin-left: 350px;
+        /* margin-left: 350px; */
         align-items: center;
-        margin-top: 5px;
     }
 
     .row {
-        width: 500px;
+        width: 300px;
         height: 25px;
         display: flex;
         flex-direction: row;
@@ -63,7 +67,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 120px;
+        width: 150px;
         height: 22px;
         font-size: 12px;
         color: #5D5D5D;

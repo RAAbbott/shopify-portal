@@ -1,5 +1,5 @@
 <template>
-    <div class="row" :class="{completed : completed}" @click="toggleCompleted()">
+    <div class="row" :class="{completed : completed}" @click="toggleCompleted()" :title="tooltip">
         <div class="cell">{{this.product.productName}}</div>
         <div class="cell"> {{this.product.variant1}}</div>
         <div class="cell">{{this.product.variant2}}</div>
@@ -19,7 +19,20 @@ export default {
 
     methods: {
         toggleCompleted() {
+            this.$store.commit('changeProductCompletedState', {id: this.product.id, val: !this.completed});
             this.completed = !this.completed;
+        }
+    },
+
+    computed: {
+        tooltip() {
+            return `${this.order.customerName} - ${this.order.dateOrdered}`;
+        },
+
+        order() {
+            const orders = this.$store.getters.orders.slice();
+            console.log('order: ', orders.find(order => order.id === this.product.orderId));
+            return orders.find(order => order.id === this.product.orderId);
         }
     }
 }

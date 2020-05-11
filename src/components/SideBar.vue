@@ -1,6 +1,7 @@
 <template>
     <div class="sidebar">
         <a v-for="page in pages" :key="page" href="#" @click="changePage(page)" :class="{active: currentPage === page}">{{page}}</a>
+        <a class="sync" @click="sync">Sync</a>
     </div>
 </template>
 
@@ -8,13 +9,17 @@
 export default {
     data() {
         return {
-            pages: ['Orders', 'Products', 'Email', 'Settings']
+            pages: ['Orders', 'Products']
         }
     },
 
     methods: {
         changePage(page) {
             this.$store.commit('changePage', page);
+        },
+
+        sync() {
+            this.$emit('sync');
         }
     },
 
@@ -36,7 +41,7 @@ export default {
         left: 0;
         overflow: none;
         padding-top: 20px;
-        margin-top: 100px;
+        margin-top: 60px;
         border-right-style: solid;
         border-right-width: .5px;
         border-right-color: rgba(0,0,0,0.1);
@@ -60,12 +65,27 @@ export default {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
+    .sidebar a:first-child {
+        margin-top: 40px;
+    }
+
+    .sidebar a:hover {
+        border-style: solid;
+        border-width: .5px;
+        border-color: rgba(0,0,0,0.1);
+        border-radius: 10px;
+        box-shadow: -1px 3px 8px #c9c7c7;
+    }
+
     .active {
-        color: red;
         border-style: solid;
         border-width: .5px;
         border-color: rgba(0,0,0,0.1);
         border-radius: 10px;
         box-shadow: -1px 3px 8px #aaaaaa;
+    }
+
+    .sync {
+        cursor: pointer;
     }
 </style>

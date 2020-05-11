@@ -33,10 +33,6 @@ export default {
         border: 0.5px solid rgba(0,0,0,0.1);
         border-radius: 10px;
         box-shadow: -1px 3px 8px #aaaaaa59;
-        /* display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        justify-content: left; */
         font-size: 12px;
         padding-left: 6px;
         padding-top: 2px;

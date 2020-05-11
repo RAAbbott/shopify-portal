@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="pageHeader">
+        <!-- <div class="pageHeader">
             <span class="leftSide">
                 <span class="pageTitle">{{page}}</span>
                 <span class="quantity">{{page === 'Orders' ? cardData.length : totalProducts}} {{page}}</span>
@@ -10,153 +10,146 @@
         </div>
         <div class="viewFilters">
             <GroupSort class="groupSort" :page="page" :options="options" @filter="updateFilters"/>
-            <!-- <Filters class="filters"/> -->
         </div>
         <div class="cardContainer">
             <div v-for="group in cardData" :key="group">
                 <Card :data="group" :type="page"/>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
-import Card from '../components/Card.vue';
-import GroupSort from '../components/GroupSort.vue';
-import Filters from '../components/Filters.vue';
-import OrdersPage from './OrdersPage.vue';
-import ProductsPage from './ProductsPage.vue';
+// import Card from '../components/Card.vue';
+// import GroupSort from '../components/GroupSort.vue';
+// import Filters from '../components/Filters.vue';
+// import OrdersPage from './OrdersPage.vue';
+// import ProductsPage from './ProductsPage.vue';
 
-export default {
-    data() {
-        return {
-            totalProducts: 0,
-            options: [],
-            selectedGroupBy: 'productName',
-            selectedSortBy: 'customerName',
-            filters: [],
-        }
-    },
+// export default {
+//     data() {
+//         return {
+//             totalProducts: 0,
+//             options: [],
+//             selectedGroupBy: 'productName',
+//             selectedSortBy: 'customerName',
+//             filters: [],
+//         }
+//     },
 
-    components: {
-        Card,
-        GroupSort,
-        Filters,
-        OrdersPage,
-        ProductsPage
-    },
+//     components: {
+//         Card,
+//         GroupSort,
+//         Filters,
+//         OrdersPage,
+//         ProductsPage
+//     },
 
-    methods: {
-        groupBy(xs, key) {
-            return xs.reduce(function(rv, x) {
-                (rv[x[key]] = rv[x[key]] || []).push(x);
-                return rv;
-            }, {});
-        },
+//     methods: {
+//         groupBy(xs, key) {
+//             return xs.reduce(function(rv, x) {
+//                 (rv[x[key]] = rv[x[key]] || []).push(x);
+//                 return rv;
+//             }, {});
+//         },
 
-        groupProducts(products) {
-            const grouped = this.groupBy(products, this.selectedGroupBy)
-            const data = []
-            for (const group in grouped) {
-                data.push({title: group, products: grouped[group]})
-            }
-            return data.sort((a, b) => (a.title > b.title) ? 1 : -1);
-        },
+//         groupProducts(products) {
+//             const grouped = this.groupBy(products, this.selectedGroupBy)
+//             const data = []
+//             for (const group in grouped) {
+//                 data.push({title: group, products: grouped[group]})
+//             }
+//             return data.sort((a, b) => (a.title > b.title) ? 1 : -1);
+//         },
 
-        sortOrders(products) {
-            return products.sort((a,b) => a[this.selectedGroupBy] > b[this.selectedGroupBy] ? 1 : -1);
-        },
+//         sortOrders(products) {
+//             return products.sort((a,b) => a[this.selectedGroupBy] > b[this.selectedGroupBy] ? 1 : -1);
+//         },
 
-        setNumberOfProducts(val) {
-            this.totalProducts = val
-        },
+//         setNumberOfProducts(val) {
+//             this.totalProducts = val
+//         },
 
-        setOptions(val) {
-            this.options = val;
-        },
+//         setOptions(val) {
+//             this.options = val;
+//         },
 
-        convertToCamelCase(str) {
-            const combined = str.split(' ').join('');
-            return `${combined.charAt(0).toLowerCase()}${combined.slice(1)}`;
-        },
+//         convertToCamelCase(str) {
+//             const combined = str.split(' ').join('');
+//             return `${combined.charAt(0).toLowerCase()}${combined.slice(1)}`;
+//         },
 
-        updateFilters(index) {
-            if (this.page === 'Orders') {
-                this.selectedGroupBy = this.convertToCamelCase(this.options[index]);
-            } else {
-                this.selectedGroupBy = index === 0 ? 'productName' : `variant${index}`;
-            }
-        },
+//         updateFilters(index) {
+//             if (this.page === 'Orders') {
+//                 this.selectedGroupBy = this.convertToCamelCase(this.options[index]);
+//             } else {
+//                 this.selectedGroupBy = index === 0 ? 'productName' : `variant${index}`;
+//             }
+//         },
 
-        updateFilter(val) {
-            this.filters.push(val);
-        },
+//         updateFilter(val) {
+//             this.filters.push(val);
+//         },
 
-        filterBy(data) {
-            if (this.page === 'Orders') {
-                return data.filter(obj => {
-                    return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
-                });
-            } else {
-                const modData = data.map(obj => {
-                    // obj.products = obj.products.map(product => ({option1: product.option1,option2: product.option1,orderId: product.orderId,productName: product.productName,productProperties: product.productProperties,variant1: product.variant1,variant2: product.variant2}));
-                    this.filters.forEach(filter => {
-                        obj.products = obj.products.filter(product => JSON.stringify(product).toLowerCase().includes(filter.toLowerCase()))
-                    });
-                    return obj;
-                });
+//         filterBy(data) {
+//             if (this.page === 'Orders') {
+//                 return data.filter(obj => {
+//                     return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
+//                 });
+//             } else {
+//                 const modData = data.map(obj => {
+//                     this.filters.forEach(filter => {
+//                         obj.products = obj.products.filter(product => JSON.stringify(product).toLowerCase().includes(filter.toLowerCase()))
+//                     });
+//                     return obj;
+//                 });
 
-                return modData.filter(obj => {
-                    // return this.filters.every(filter => JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
-                    return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
-                });
-            }
-        }
-    },
+//                 return modData.filter(obj => {
+//                     return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(obj).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(obj).toLowerCase().includes(filter.toLowerCase()));
+//                 });
+//             }
+//         }
+//     },
 
-    computed: {
-        page() {
-            return this.$store.state.currentPage;
-        },
+//     computed: {
+//         page() {
+//             return this.$store.state.currentPage;
+//         },
 
-        cardData() {
-            const orders = this.$store.state.orders;
-            if (this.page === 'Orders') {
-                this.setOptions(['Date Ordered', 'Customer Name', 'Customer Email', 'Amount']);
-                const sorted = this.sortOrders(orders.map(order => ({title: `${order.customerName} - ${order.customerEmail} - $${order.amount} - ${order.dateOrdered}`, customerName: order.customerName, customerEmail: order.customerEmail, amount: order.amount, dateOrdered: order.dateOrdered, products: order.products, note: order.note})));
-                return this.filterBy(sorted) || []; 
-            } else if (this.page === 'Products') { 
-                this.setOptions(['Product Name', orders[0].products[0].option1, orders[0].products[0].option2, orders[0].products[0].option3]);
-                const products = orders.map(order=>order.products).flat();
-                this.setNumberOfProducts(products.length);
-                const grouped = this.groupProducts(products);
-                console.log(grouped);
-                return this.filterBy(grouped);
-            } else {
-                console.log('Other Page');
-                return [];
-            }
-        },
+//         cardData() {
+//             const orders = this.$store.state.orders;
+//             const products = this.$store.state.products;
+//             console.log(this.$store.state.orders);
+//             console.log(orders);
+//             if (this.page === 'Orders') {
+//                 this.setOptions(['Date Ordered', 'Customer Name', 'Customer Email', 'Amount']);
+//                 const sorted = this.sortOrders(orders.map(order => ({title: `${order.customerName} - ${order.customerEmail} - $${order.amount} - ${order.dateOrdered}`, customerName: order.customerName, customerEmail: order.customerEmail, amount: order.amount, dateOrdered: order.dateOrdered, products: products.filter(product => product.orderId === order.id), note: order.note})));
+//                 return this.filterBy(sorted) || []; 
+//             } else if (this.page === 'Products') { 
+//                 this.setOptions(['Product Name', orders[0].products[0].option1, orders[0].products[0].option2, orders[0].products[0].option3]);
+//                 this.setNumberOfProducts(products.length);
+//                 const grouped = this.groupProducts(products);
+//                 console.log(grouped);
+//                 return this.filterBy(grouped);
+//             } else {
+//                 console.log('Other Page');
+//                 return [];
+//             }
+//         },
 
-        headers() {
-            return this.$store.state.tableHeaders;
-        },
-    },
+//         headers() {
+//             return this.$store.state.tableHeaders;
+//         },
+//     },
 
-    // watch: {
-    //     cardData() {
-
-    //     }
-    // },
-
-    created() {
-        this.$store.dispatch('getOrders');
-    }
-}
+//     created() {
+//         this.$store.dispatch('getOrders');
+//     }
+// }
 </script>
 
 <style scoped>
-    .pageHeader {
+    /* .pageHeader {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -172,10 +165,6 @@ export default {
     }
 
     .quantity {
-        /* display: flex;
-        flex-wrap: wrap;
-        justify-content: left;
-        margin-bottom: 20px; */
         margin-left: 40px;
     }
 
@@ -198,10 +187,6 @@ export default {
 
     .filters {
         margin-bottom: 20px;
-    }
-
-    .groupSort {
-        /* margin-bottom: 20px; */
-    }
+    } */
 
 </style>
