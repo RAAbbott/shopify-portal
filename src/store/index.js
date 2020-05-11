@@ -73,7 +73,7 @@ export const store = new Vuex.Store({
 
     actions: {
         getOrders({state}) {
-            Axios.get('http://localhost:3060/orders').then(res => {
+            Axios.get('https://eom-shopify-server.herokuapp.com/orders').then(res => {
                 state.orders = res.data.orderList;
                 state.products = res.data.productList;
             }).catch(err => console.log('err: ', err));
