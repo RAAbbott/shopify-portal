@@ -31,7 +31,6 @@ export default {
 
         order() {
             const orders = this.$store.getters.orders.slice();
-            console.log('order: ', orders.find(order => order.id === this.product.orderId));
             return orders.find(order => order.id === this.product.orderId);
         }
     }
