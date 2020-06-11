@@ -10,7 +10,7 @@ export default {
     methods: {
         getMockData() {
             this.$store.dispatch('getMockData');
-        }
+        },
     }
 }
 </script>
@@ -39,7 +39,7 @@ export default {
         top: 10px
     }
 
-    .mockButton {
+    .mockButton, .completeButton {
         float: right;
         margin: 15px 80px 0 0;
         border: 0.5px solid rgba(0,0,0,0.1);

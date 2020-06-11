@@ -4,8 +4,11 @@
     <SideBar @sync="getOrders"/>
     <div class="main-content">
       <div v-if="!loaded">Loading...</div>
-      <component :is="component" v-if="loaded" />
+      <!-- <keep-alive> -->
+        <component :is="component" v-if="loaded" />
+      <!-- </keep-alive> -->
     </div>
+    <SelectedBar v-if="showCompletedBar" />
   </div>
 </template>
 
@@ -14,6 +17,7 @@ import OrdersPage from './views/OrdersPage.vue';
 import ProductsPage from './views/ProductsPage.vue';
 import SideBar from './components/SideBar.vue';
 import Header from './components/Header.vue';
+import SelectedBar from './components/SelectedBar.vue';
 
 export default {
   name: 'App',
@@ -21,7 +25,8 @@ export default {
     OrdersPage,
     ProductsPage,
     SideBar,
-    Header
+    Header,
+    SelectedBar
   },
   data() {
     return {
@@ -39,6 +44,10 @@ export default {
   computed: {
     component() {
       return `${this.$store.getters.curPage}Page`
+    },
+
+    showCompletedBar() {
+      return this.$store.getters.ordersReadyToComplete.length
     }
   },
 

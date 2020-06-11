@@ -18,6 +18,7 @@ export const store = new Vuex.Store({
         orders: [],
         products: [],
         filters: [],
+        ordersReadyToComplete: []
     },
 
     getters: {
@@ -30,6 +31,7 @@ export const store = new Vuex.Store({
         sortBy: (state) => state.sortBy,
         sortByDir: (state) => state.sortByDir,
         groupBy: (state) => state.groupBy,
+        ordersReadyToComplete: (state) => state.ordersReadyToComplete,
     },
 
     mutations: {
@@ -76,6 +78,18 @@ export const store = new Vuex.Store({
                 this.selectedGroupBy = index === 0 ? 'productName' : `variant${index}`;
             }
         },
+
+        updateReadyOrders(state, data) {
+            const id = data.id;
+            const arr = state.ordersReadyToComplete;
+            if (data.val) {
+                state.ordersReadyToComplete.push(id);
+            } else {
+                state.ordersReadyToComplete.splice(arr.indexOf(id), 1);
+            }
+
+            localStorage.setItem('markedOrders', JSON.stringify(state.ordersReadyToComplete));
+        }
     },
 
     actions: {
@@ -85,6 +99,12 @@ export const store = new Vuex.Store({
                     state.products.forEach(product => product.completed = JSON.parse(localStorage.getItem('completedProducts')).includes(product.id));
                 } else {
                     localStorage.setItem('completedProducts', JSON.stringify(state.products.filter(product => product.completed).map(product => product.id)));
+                }
+
+                if (localStorage.getItem('markedOrders')) {
+                    state.ordersReadyToComplete = JSON.parse(localStorage.getItem('markedOrders'));
+                } else {
+                    localStorage.setItem('markedOrders', JSON.stringify(state.ordersReadyToComplete));
                 }
             }
 
@@ -98,6 +118,10 @@ export const store = new Vuex.Store({
         getMockData({state}) {
             state.orders = mockData.orderList;
             state.products = mockData.productList;
+        },
+
+        completeOrders({state}) {
+            Axios.post('http://localhost:3060/completeOrders', {orderIds: state.ordersReadyToComplete}).then(() => state.ordersReadyToComplete = []).catch(err => console.log(err));
         }
     }
 });
