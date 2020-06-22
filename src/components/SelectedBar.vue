@@ -3,7 +3,7 @@
         <div class="container">
             <span class="nameItem" v-for="order in selectedOrders" :key="order.id">{{order.name}}</span>
         </div>
-        <span class="completeButton" @click="completeOrders">Complete Orders</span>
+        <span class="completeButton" @click="completeOrders()">Complete Orders</span>
     </div>
 </template>
 

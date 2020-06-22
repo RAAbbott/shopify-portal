@@ -6,6 +6,7 @@
                     <div class="cell" v-for="(header, i) in headers" :key="i">{{header}}</div>
                 </div>
                 <ProductRow v-for="product in this.products" :key="product.id" :product="product"/>
+                <!-- <span class="infoMessage">Click on a product to mark as "Complete"</span> -->
             </div>
         </div>
     </div>
@@ -38,6 +39,7 @@ export default {
 <style scoped>
     .table {
         width: 600px;
+        margin-bottom: 20px;
     }
 
     .body {
@@ -59,6 +61,12 @@ export default {
         margin-top: 5px;
         box-shadow: -1px 1px 3px #cacaca;
         margin-left: 20px;
+    }
+
+    .infoMessage {
+        float: right;
+        margin: 5px 20px 0 0;
+        font-size: 10px;
     }
 
     /* .row:last-child {

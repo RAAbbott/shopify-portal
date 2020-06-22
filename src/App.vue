@@ -9,6 +9,7 @@
       <!-- </keep-alive> -->
     </div>
     <SelectedBar v-if="showCompletedBar" />
+    <Snackbar />
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import ProductsPage from './views/ProductsPage.vue';
 import SideBar from './components/SideBar.vue';
 import Header from './components/Header.vue';
 import SelectedBar from './components/SelectedBar.vue';
+import Snackbar from './components/Snackbar.vue';
 
 export default {
   name: 'App',
@@ -26,7 +28,8 @@ export default {
     ProductsPage,
     SideBar,
     Header,
-    SelectedBar
+    SelectedBar,
+    Snackbar
   },
   data() {
     return {

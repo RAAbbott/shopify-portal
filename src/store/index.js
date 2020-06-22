@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Axios from 'axios';
 import utils from '../shared/utils';
 import mockData from '../shared/mockData';
+import { EventBus as bus } from '../shared/eventBus';
 
 Vue.use(Vuex);
 
@@ -50,6 +51,20 @@ export const store = new Vuex.Store({
                 localStorage.setItem('completedProducts', JSON.stringify(completedProducts));
             }
         },
+
+        changeOrderCompletedState(state, orderIds) {
+            console.log(localStorage.getItem('completedOrders'));
+            console.log(state.orders.filter(order => order.completed))
+            const storedCompleted = JSON.parse(localStorage.getItem('completedOrders')) || [];
+            state.orders.forEach(order => {
+                order.completed = orderIds.includes(order.id) || storedCompleted.includes(order.id);
+                if (order.completed && !storedCompleted.includes(order.id)) {
+                    storedCompleted.push(order.id);
+                }
+            });
+
+            localStorage.setItem('completedOrders', JSON.stringify(storedCompleted));
+        },
     
         addFilter(state, filter) {
             state.filters = [...state.filters, filter];
@@ -89,7 +104,7 @@ export const store = new Vuex.Store({
             }
 
             localStorage.setItem('markedOrders', JSON.stringify(state.ordersReadyToComplete));
-        }
+        },
     },
 
     actions: {
@@ -106,6 +121,12 @@ export const store = new Vuex.Store({
                 } else {
                     localStorage.setItem('markedOrders', JSON.stringify(state.ordersReadyToComplete));
                 }
+
+                state.orders.forEach(order => {
+                    order.completed = order.tags.includes('EOM-READY');
+                });
+
+                localStorage.setItem('completedOrders', JSON.stringify(state.orders.filter(order => order.completed).map(order => order.id)));
             }
 
             Axios.get('http://localhost:3060/orders').then(res => {
@@ -120,8 +141,17 @@ export const store = new Vuex.Store({
             state.products = mockData.productList;
         },
 
-        completeOrders({state}) {
-            Axios.post('http://localhost:3060/completeOrders', {orderIds: state.ordersReadyToComplete}).then(() => state.ordersReadyToComplete = []).catch(err => console.log(err));
+        completeOrders({state, commit}) {
+            Axios.post('http://localhost:3060/completeOrders', {orderIds: state.ordersReadyToComplete}).then(response => {
+                console.log(response);
+                commit('changeOrderCompletedState', state.ordersReadyToComplete);
+                state.ordersReadyToComplete = [];
+                localStorage.setItem('markedOrders', JSON.stringify([]));
+                bus.$emit('showSnackbar', true);
+            }).catch(err => {
+                console.log(err);
+                bus.$emit('showSnackbar', false);
+            });
         }
     }
 });

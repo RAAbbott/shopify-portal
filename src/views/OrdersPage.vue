@@ -34,7 +34,6 @@ export default {
         },
 
         sortOrders(orders) {
-            console.log('sorting');
             return orders.sort((a,b) => a[this.selectedSortBy] > b[this.selectedSortBy] ? 1 : -1);
         },
 
@@ -46,7 +45,6 @@ export default {
             return orders.filter(order => {
                 const modOrder = Object.assign({}, order);
                 modOrder.products = this.productsForOrder(order).map(product => Object.values(product));
-                // console.log('MODORDER : ', modOrder);
                 return this.filters.every(filter => filter.includes('e:') ? !JSON.stringify(Object.values(modOrder)).toLowerCase().includes(filter.slice(2).toLowerCase()) : JSON.stringify(Object.values(modOrder)).toLowerCase().includes(filter.toLowerCase()));
             });
         },
