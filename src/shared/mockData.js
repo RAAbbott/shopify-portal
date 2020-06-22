@@ -5,6 +5,9 @@ export default {
        "customerName":"Terri",
        "note":"This is a test note!",
        "dateOrdered":"May 03",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           4974966931542,
           4974966931542879000
@@ -15,6 +18,9 @@ export default {
        "customerName":"LINDSAY",
        "note":null,
        "dateOrdered":"May 04",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           4981891301462,
           4981891334230
@@ -25,6 +31,9 @@ export default {
        "customerName":"Kami",
        "note":"",
        "dateOrdered":"May 06",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           4992977895510
        ]
@@ -34,6 +43,9 @@ export default {
        "customerName":"Alexis",
        "note":"This is a gift, please don't include receipt!",
        "dateOrdered":"May 07",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           4998104186966,
           4998104252502,
@@ -45,6 +57,9 @@ export default {
        "customerName":"Anna",
        "note":null,
        "dateOrdered":"May 07",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           4998663372886
        ]
@@ -54,6 +69,9 @@ export default {
        "customerName":"Kelly",
        "note":null,
        "dateOrdered":"May 07",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5001827450966
        ]
@@ -63,6 +81,9 @@ export default {
        "customerName":"Trisha",
        "note":"",
        "dateOrdered":"May 08",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5006912192598,
           5006912258134
@@ -73,6 +94,9 @@ export default {
        "customerName":"Caitlin",
        "note":"",
        "dateOrdered":"May 08",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5007178268758
        ]
@@ -82,6 +106,9 @@ export default {
        "customerName":"Macey",
        "note":"",
        "dateOrdered":"May 08",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5007308914774,
           5007308947542,
@@ -94,6 +121,9 @@ export default {
        "customerName":"Cheri",
        "note":"",
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5008489152598,
           5008489185366,
@@ -105,6 +135,9 @@ export default {
        "customerName":"Tanya",
        "note":"",
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5008670621782,
           5008670654550
@@ -115,6 +148,9 @@ export default {
        "customerName":"Kellie",
        "note":"",
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5008743170134,
           5008743202902,
@@ -126,6 +162,9 @@ export default {
        "customerName":"Camille",
        "note":"",
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5009192616022,
           5009192648790,
@@ -137,6 +176,9 @@ export default {
        "customerName":"nicolette",
        "note":"Take me to Disneyworld! ",
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5009262379094
        ]
@@ -146,6 +188,9 @@ export default {
        "customerName":"Jennifer",
        "note":null,
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5009338761302
        ]
@@ -155,6 +200,9 @@ export default {
        "customerName":"Emily",
        "note":null,
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5010228052054,
           5010228084822,
@@ -166,6 +214,9 @@ export default {
        "customerName":"Elizabeth",
        "note":"",
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5011068452950
        ]
@@ -175,6 +226,9 @@ export default {
        "customerName":"Gini",
        "note":null,
        "dateOrdered":"May 09",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5012847853654
        ]
@@ -184,6 +238,9 @@ export default {
        "customerName":"Alyssa",
        "note":"",
        "dateOrdered":"May 10",
+       "completed": false,
+       "marked": false,
+       "tags": "",
        "products":[
           5014762782806
        ]

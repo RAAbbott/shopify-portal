@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Axios from 'axios';
+// import Axios from 'axios';
 import utils from '../shared/utils';
 import mockData from '../shared/mockData';
 import { EventBus as bus } from '../shared/eventBus';
@@ -53,9 +53,7 @@ export const store = new Vuex.Store({
         },
 
         changeOrderCompletedState(state, orderIds) {
-            console.log(localStorage.getItem('completedOrders'));
-            console.log(state.orders.filter(order => order.completed))
-            const storedCompleted = JSON.parse(localStorage.getItem('completedOrders')) || [];
+            const storedCompleted = [];
             state.orders.forEach(order => {
                 order.completed = orderIds.includes(order.id) || storedCompleted.includes(order.id);
                 if (order.completed && !storedCompleted.includes(order.id)) {
@@ -63,7 +61,7 @@ export const store = new Vuex.Store({
                 }
             });
 
-            localStorage.setItem('completedOrders', JSON.stringify(storedCompleted));
+            // localStorage.setItem('completedOrders', JSON.stringify(storedCompleted));
         },
     
         addFilter(state, filter) {
@@ -109,31 +107,37 @@ export const store = new Vuex.Store({
 
     actions: {
         getOrders({state}) {
-            const localStorageData = (state) => {
-                if (localStorage.getItem('completedProducts')) {
-                    state.products.forEach(product => product.completed = JSON.parse(localStorage.getItem('completedProducts')).includes(product.id));
-                } else {
-                    localStorage.setItem('completedProducts', JSON.stringify(state.products.filter(product => product.completed).map(product => product.id)));
-                }
+            // This function usually hits the backend in order to get the data from the user's shopify store. For purposes of this demo,
+            // I'm just using some local data stored in the front end so the functionality can still be mimicked.
+            
+            // const localStorageData = (state) => {
+            //     if (localStorage.getItem('completedProducts')) {
+            //         state.products.forEach(product => product.completed = JSON.parse(localStorage.getItem('completedProducts')).includes(product.id));
+            //     } else {
+            //         localStorage.setItem('completedProducts', JSON.stringify(state.products.filter(product => product.completed).map(product => product.id)));
+            //     }
 
-                if (localStorage.getItem('markedOrders')) {
-                    state.ordersReadyToComplete = JSON.parse(localStorage.getItem('markedOrders'));
-                } else {
-                    localStorage.setItem('markedOrders', JSON.stringify(state.ordersReadyToComplete));
-                }
+            //     if (localStorage.getItem('markedOrders')) {
+            //         state.ordersReadyToComplete = JSON.parse(localStorage.getItem('markedOrders'));
+            //     } else {
+            //         localStorage.setItem('markedOrders', JSON.stringify(state.ordersReadyToComplete));
+            //     }
 
-                state.orders.forEach(order => {
-                    order.completed = order.tags.includes('EOM-READY');
-                });
+            //     state.orders.forEach(order => {
+            //         order.completed = order.tags.includes('EOM-READY');
+            //     });
 
-                localStorage.setItem('completedOrders', JSON.stringify(state.orders.filter(order => order.completed).map(order => order.id)));
-            }
+            //     localStorage.setItem('completedOrders', JSON.stringify(state.orders.filter(order => order.completed).map(order => order.id)));
+            // }
 
-            Axios.get('http://localhost:3060/orders').then(res => {
-                state.orders = res.data.orderList;
-                state.products = res.data.productList;
-                localStorageData(state);
-            }).catch(err => console.log('err: ', err));
+            state.orders = mockData.orderList;
+            state.products = mockData.productList;
+
+            // Axios.get('http://localhost:3060/orders').then(res => {
+            //     state.orders = res.data.orderList;
+            //     state.products = res.data.productList;
+            //     localStorageData(state);
+            // }).catch(err => console.log('err: ', err));
         },
     
         getMockData({state}) {
@@ -142,16 +146,22 @@ export const store = new Vuex.Store({
         },
 
         completeOrders({state, commit}) {
-            Axios.post('http://localhost:3060/completeOrders', {orderIds: state.ordersReadyToComplete}).then(response => {
-                console.log(response);
-                commit('changeOrderCompletedState', state.ordersReadyToComplete);
-                state.ordersReadyToComplete = [];
-                localStorage.setItem('markedOrders', JSON.stringify([]));
-                bus.$emit('showSnackbar', true);
-            }).catch(err => {
-                console.log(err);
-                bus.$emit('showSnackbar', false);
-            });
+            // This would make a call to the backend and complete the orders on the shopify store.
+
+            commit('changeOrderCompletedState', state.ordersReadyToComplete);
+            state.ordersReadyToComplete = [];
+            bus.$emit('showSnackbar', true);
+
+            // Axios.post('http://localhost:3060/completeOrders', {orderIds: state.ordersReadyToComplete}).then(response => {
+            //     console.log(response);
+            //     commit('changeOrderCompletedState', state.ordersReadyToComplete);
+            //     state.ordersReadyToComplete = [];
+            //     localStorage.setItem('markedOrders', JSON.stringify([]));
+            //     bus.$emit('showSnackbar', true);
+            // }).catch(err => {
+            //     console.log(err);
+            //     bus.$emit('showSnackbar', false);
+            // });
         }
     }
 });
