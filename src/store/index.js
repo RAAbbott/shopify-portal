@@ -19,7 +19,8 @@ export const store = new Vuex.Store({
         orders: [],
         products: [],
         filters: [],
-        ordersReadyToComplete: []
+        ordersReadyToComplete: [],
+        storedCompleted: []
     },
 
     getters: {
@@ -53,13 +54,15 @@ export const store = new Vuex.Store({
         },
 
         changeOrderCompletedState(state, orderIds) {
-            const storedCompleted = [];
+            const storedCompleted = state.storedCompleted;
             state.orders.forEach(order => {
                 order.completed = orderIds.includes(order.id) || storedCompleted.includes(order.id);
                 if (order.completed && !storedCompleted.includes(order.id)) {
                     storedCompleted.push(order.id);
                 }
             });
+
+            state.storedCompleted = storedCompleted;
 
             // localStorage.setItem('completedOrders', JSON.stringify(storedCompleted));
         },
