@@ -1,17 +1,12 @@
 <template>
     <div class="header">
         <span class="title">Easy Order Manager</span>
-        <span class="mockButton" @click="getMockData">Use Mock Data</span>
     </div>
 </template>
 
 <script>
 export default {
-    methods: {
-        getMockData() {
-            this.$store.dispatch('getMockData');
-        },
-    }
+
 }
 </script>
 
