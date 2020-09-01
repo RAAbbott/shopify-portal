@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Axios from 'axios';
 import utils from '../shared/utils';
-import mockData from '../shared/mockData';
 import { EventBus as bus } from '../shared/eventBus';
 
 Vue.use(Vuex);
@@ -137,8 +136,9 @@ export const store = new Vuex.Store({
         },
     
         getMockData({state}) {
-            state.orders = mockData.orderList;
-            state.products = mockData.productList;
+            // state.orders = mockData.orderList;
+            // state.products = mockData.productList;
+            state.ordersReadyToComplete = [];
         },
 
         completeOrders({state, commit}) {
